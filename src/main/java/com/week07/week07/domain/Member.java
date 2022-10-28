@@ -15,9 +15,12 @@ import javax.persistence.*;
 public class Member extends Timestamped{
 
     @Id
-    @Column(name = "memberid")
+    @Column(name = "memberId")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long memberId;
+
+    @Column(nullable = false)
+    private String userName;
 
     @Column(nullable = false)
     private String userId;
@@ -25,12 +28,23 @@ public class Member extends Timestamped{
     @Column(nullable = false)
     private String pw;
 
-    public Member(MemberReqDto memberReqDto) {
-        this.userId = memberReqDto.getUserid();
+    private String intro;
+
+    private String userImgPath;
+
+//    @ElementCollection
+//    private List<String> userTag;
+
+    public Member(MemberReqDto memberReqDto, String normalPath) {
+        this.userName = memberReqDto.getUserName();
+        this.userId = memberReqDto.getUserId();
         this.pw = memberReqDto.getPw();
+        this.intro = memberReqDto.getIntro();
+        this.userImgPath = normalPath;
     }
 
+
     public boolean validatePassword(PasswordEncoder passwordEncoder, String pw) {
-        return passwordEncoder.matches(pw, this.pw);
+        return !passwordEncoder.matches(pw, this.pw);
     }
 }
