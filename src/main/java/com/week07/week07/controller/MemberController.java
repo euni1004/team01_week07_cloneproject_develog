@@ -19,7 +19,7 @@ public class MemberController {
     private final MemberService memberService;
 
     //아이디 체크
-    @PostMapping("/member/idck")
+    @PostMapping("/member/idCheck")
     public ResponseEntity<?> idCheck(@RequestBody idCheckDto idCheckDto){
         return memberService.idCheck(idCheckDto);
     }

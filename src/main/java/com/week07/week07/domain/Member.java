@@ -20,13 +20,13 @@ public class Member extends Timestamped{
     private Long memberId;
 
     @Column(nullable = false)
-    private String userid;
+    private String userId;
 
     @Column(nullable = false)
     private String pw;
 
     public Member(MemberReqDto memberReqDto) {
-        this.userid = memberReqDto.getUserid();
+        this.userId = memberReqDto.getUserid();
         this.pw = memberReqDto.getPw();
     }
 

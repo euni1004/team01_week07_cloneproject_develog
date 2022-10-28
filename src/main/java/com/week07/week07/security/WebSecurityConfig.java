@@ -80,7 +80,7 @@ public class WebSecurityConfig {
         //토큰없이 요청가능한 url 그외에는 권환학인 필수
         http
                 .authorizeRequests()
-                .antMatchers("주소입력").permitAll()
+                .antMatchers("/member/**").permitAll()
 
                 .anyRequest().authenticated()
 

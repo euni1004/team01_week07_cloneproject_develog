@@ -68,7 +68,7 @@ public class MemberService {
         }
 
         setHeader(response,tokenDto);
-        return ResponseEntity.ok(new LoginReqDto(member.getUserid()));
+        return ResponseEntity.ok(new LoginReqDto(member.getUserId()));
     }
 
     @Transactional(readOnly = true)

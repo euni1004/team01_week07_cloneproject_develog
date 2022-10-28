@@ -1,8 +1,11 @@
-spring:
-  profiles:
-    include: secret
+server:
+  servlet:
+    context-path: /team01
 
 spring:
+  profiles:
+    include : secret
+
   h2:
     console:
       enabled: true
