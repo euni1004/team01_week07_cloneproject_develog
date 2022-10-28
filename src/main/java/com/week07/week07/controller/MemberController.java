@@ -1,11 +1,11 @@
 package com.week07.week07.controller;
 
+import com.week07.week07.dto.GlobalResDto;
 import com.week07.week07.dto.request.LoginReqDto;
 import com.week07.week07.dto.request.MemberReqDto;
 import com.week07.week07.dto.request.idCheckDto;
 import com.week07.week07.service.MemberService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,19 +20,19 @@ public class MemberController {
 
     //아이디 체크
     @PostMapping("/member/idCheck")
-    public ResponseEntity<?> idCheck(@RequestBody idCheckDto idCheckDto){
+    public GlobalResDto<?> idCheck(@RequestBody idCheckDto idCheckDto){
         return memberService.idCheck(idCheckDto);
     }
 
     //회원가입
     @PostMapping("/member/signup")
-    public ResponseEntity<?> signup(@RequestBody @Valid MemberReqDto memberReqDto){
+    public GlobalResDto<?> signup(@RequestBody MemberReqDto memberReqDto){
         return memberService.signup(memberReqDto);
     }
 
     //로그인
     @PostMapping("/member/login")
-    public ResponseEntity<?> login(@RequestBody @Valid LoginReqDto loginReqDto, HttpServletResponse response){
+    public GlobalResDto<?> login(@RequestBody @Valid LoginReqDto loginReqDto, HttpServletResponse response){
         return memberService.login(loginReqDto,response);
     }
 }
