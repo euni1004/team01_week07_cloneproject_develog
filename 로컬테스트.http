@@ -1,0 +1,150 @@
+###중복확인
+POST http://localhost:8080/team01/member/idCheck
+Content-Type: application/json
+
+{
+  "userId": "asd123"
+}
+
+
+###회원가입
+POST http://localhost:8080/team01/member/signup
+Content-Type: application/json
+
+{
+  "userName": "병현",
+  "userId": "asd123",
+  "pw": "Aasd123!",
+  "pwCheck": "Aasd123!",
+  "intro": "소개"
+}
+
+###로그인
+POST http://localhost:8080/team01/member/login
+Content-Type: application/json
+
+{
+  "userid" : "asd123",
+  "pw" : "ASASd123!"
+}
+> {% client.global.set("Access_Token", response.headers.valueOf("Access_Token"));
+client.log("생성된 Access_Token : "+client.global.get("Access_Token")); %}
+
+
+###글 쓰기
+POST http://localhost:8080/team01/post
+Access_Token: {{Access_Token}}
+Content-Type: application/json
+
+{
+  "postImg": "URL",
+  "postTitle": "제목",
+  "postContent": "내용",
+  "postTag": ["태그1","태그2"]
+}
+
+###글 수정
+PUT http://localhost:8080//team01/post/1
+Access_Token: {{Access_Token}}
+Content-Type: application/json
+
+{
+  "postImg": "URL",
+  "postTitle": "제목",
+  "postContent": "내용",
+  "postTag": ["태그1","태그2"]
+}
+
+### 글삭제
+ DELETE http://localhost:8080/team01/post/1
+Access_Token: {{Access_Token}}
+
+
+###게시글 전체 조회
+GET http://localhost:8080/team01/getPost
+
+
+###게시글 상세 조회
+GET http://localhost:8080/team01/getPost/1
+
+
+###댓글 작성
+POST http://localhost:8080/team01/comment/1
+Access_Token: {{Access_Token}}
+Content-Type: application/json
+
+{
+  "comment" : "댓글내용"
+}
+
+
+###댓글 삭제
+DELETE http://localhost:8080/team01/comment/1
+Access_Token: {{Access_Token}}
+Content-Type: application/json
+
+
+###카테고리 글 불러오기
+GET http://localhost:8080/post/toon
+Access_Token: {{Access_Token}}
+
+
+###글 하나 불러오기
+GET http://localhost:8080/post/detail/1
+Access_Token: {{Access_Token}}
+
+
+###전체 글 불러오기
+GET http://localhost:8080/post
+Access_Token: {{Access_Token}}
+
+
+
+###댓글쓰기
+POST http://localhost:8080/comment/1
+Access_Token: {{Access_Token}}
+Content-Type: application/json
+
+{
+  "content": "댓글댓글입니다"
+}
+
+###댓글 수정
+PUT http://localhost:8080/comment/1
+Access_Token: {{Access_Token}}
+Content-Type: application/json
+
+{
+  "postId": 1,
+  "comments": "댓글22입니다"
+}
+
+###댓글 삭제
+DELETE http://localhost:8080/comment/1
+Access_Token: {{Access_Token}}
+Content-Type: application/json
+
+{
+  "postId": 1,
+  "comments": "댓글22입니다"
+}
+
+
+###좋아요 생성
+POST http://localhost:8080/heart/2
+Access_Token: {{Access_Token}}
+
+
+
+###좋아요삭제
+DELETE http://localhost:8080/heart/1
+Access_Token: {{Access_Token}}
+
+###일반API요청
+GET http://localhost:8080/member/me
+Access_Token: {{Access_Token}}
+
+###토큰 재발급
+POST http://localhost:8080/auth/reissue
+Content-Type: application/json
+{ "accessToken": " eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTY2NTYxNDEyNn0.AbiE7eFd5l7pPvZycIdqPUBnsimMkGlsXlLoMWIq3DwxVfdGxb8bOKIDy0j-2DbUC1lLAFBJF_nsihxJXD7-Uw", "refreshToken": "eyJhbGciOiJIUzUxMiJ9.eyJleHAiOjE2NjYyMTcxMjZ9.5RyEhptEeD-0kJQ7SEDISCgnEPZVJlivVouqM4DQ5YiUXFzDvHu4L8dYSX7UU5C5igwhRasa27ExyoeO-W_pDQ" }
