@@ -1,7 +1,8 @@
-package com.week07.domain;
+package com.week07.week07.domain;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

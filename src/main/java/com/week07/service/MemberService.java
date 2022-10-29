@@ -1,4 +1,4 @@
-package com.week07.service;
+package com.week07.week07.service;
 
 import com.week07.domain.Member;
 import com.week07.domain.RefreshToken;
@@ -60,7 +60,8 @@ public class MemberService {
         if(member==null){
             return GlobalResDto.fail(ErrorCode.NOT_FOUND_MEMBER);
         }
-        if(!member.validatePassword(passwordEncoder,loginReqDto.getPw())){
+
+        if(member.validatePassword(passwordEncoder, loginReqDto.getPw())){
             return GlobalResDto.fail(ErrorCode.WRONG_PASSWORD);
         }
         TokenDto tokenDto = jwtUtil.createAllToken(loginReqDto.getUserid());

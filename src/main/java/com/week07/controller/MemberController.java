@@ -6,6 +6,7 @@ import com.week07.dto.request.MemberReqDto;
 import com.week07.dto.request.idCheckDto;
 import com.week07.service.MemberService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,7 +27,7 @@ public class MemberController {
 
     //회원가입
     @PostMapping("/member/signup")
-    public GlobalResDto<?> signup(@RequestBody @Valid MemberReqDto memberReqDto){
+    public GlobalResDto<?> signup(@RequestBody MemberReqDto memberReqDto){
         return memberService.signup(memberReqDto);
     }
 
