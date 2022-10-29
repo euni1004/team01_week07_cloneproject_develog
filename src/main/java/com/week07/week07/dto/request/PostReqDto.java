@@ -18,6 +18,4 @@ public class PostReqDto {
     private String imgUrl;
 
     private String content;
-
-    private String tag;
 }

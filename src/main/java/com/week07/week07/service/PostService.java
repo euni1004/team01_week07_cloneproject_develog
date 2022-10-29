@@ -3,7 +3,9 @@ package com.week07.week07.service;
 
 import com.week07.week07.domain.Member;
 import com.week07.week07.domain.Post;
+import com.week07.week07.dto.GlobalResDto;
 import com.week07.week07.dto.request.PostReqDto;
+import com.week07.week07.exception.ErrorCode;
 import com.week07.week07.repository.PostRepository;
 import com.week07.week07.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
@@ -21,39 +23,40 @@ public class PostService {
 
 
     //포스트 작성
-    public void post(PostReqDto postReqDto, UserDetailsImpl userDetails){
+    public GlobalResDto<?> post(PostReqDto postReqDto, UserDetailsImpl userDetails){
         Member member = userDetails.getAccount();
         Post post = new Post(postReqDto,member);
         postRepository.save(post);
-
+        PostResponseDto postResponseDto = new PostResponseDto(post);
+        return GlobalResDto.success(postResponseDto,"게시물 작성완료");
     }
 
 
 
     @Transactional
-    public void update(Long id, PostReqDto postReqDto, Member member){
+    public GlobalResDto<?> update(Long id, PostReqDto postReqDto, Member member){
         Post post = postRepository.findById(id).orElseThrow(
                 ()-> new IllegalArgumentException("해당글이 없습니다")
         );
-
         if(post.getMember().getMemberId().equals(member.getMemberId())){
             post.update(postReqDto);
-            return new Post(post);
+            PostResponseDto postResponseDto = new PostResponseDto(post);
+            return GlobalResDto.success(postResponseDto,"수정이 완료되었습니다");
         }else {
-            throw new RuntimeException("작성자가 아닙니다.");
+            return GlobalResDto.fail(ErrorCode.WRONG_MEMBER);
         }
     }
 
     @Transactional
-    public String deletePost(Long postId,  Member member){
+    public GlobalResDto<?> deletePost(Long postId,  Member member){
         Post post = postRepository.findById(postId).orElseThrow(
                 ()-> new IllegalArgumentException("해당글이 없습니다")
         );
         if(member.getMemberId().equals(post.getMember().getMemberId())){
             postRepository.deleteById(postId);
-            return "삭제된 게시글 번호 : "+postId;
+            return GlobalResDto.success(null,"삭제완료");
         }else{
-            throw new RuntimeException("아이디가 다릅니다.") ;
+            return GlobalResDto.fail(ErrorCode.WRONG_MEMBER);
         }
     }
 
