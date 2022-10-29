@@ -1,6 +1,6 @@
 package com.week07.week07.domain;
 
-import com.week07.week07.dto.request.MemberReqDto;
+import com.week07.week07.dto.request.request.MemberReqDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -2,9 +2,9 @@ package com.week07.week07.service;
 
 import com.week07.week07.domain.Member;
 import com.week07.week07.domain.RefreshToken;
-import com.week07.week07.dto.request.LoginReqDto;
-import com.week07.week07.dto.request.MemberReqDto;
-import com.week07.week07.dto.request.idCheckDto;
+import com.week07.week07.dto.request.request.LoginReqDto;
+import com.week07.week07.dto.request.request.MemberReqDto;
+import com.week07.week07.dto.request.request.idCheckDto;
 import com.week07.week07.exception.ErrorCode;
 import com.week07.week07.exception.ErrorResponse;
 import com.week07.week07.jwt.JwtUtil;

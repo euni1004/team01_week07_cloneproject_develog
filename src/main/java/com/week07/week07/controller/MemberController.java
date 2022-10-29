@@ -1,8 +1,8 @@
 package com.week07.week07.controller;
 
-import com.week07.week07.dto.request.LoginReqDto;
-import com.week07.week07.dto.request.MemberReqDto;
-import com.week07.week07.dto.request.idCheckDto;
+import com.week07.week07.dto.request.request.LoginReqDto;
+import com.week07.week07.dto.request.request.MemberReqDto;
+import com.week07.week07.dto.request.request.idCheckDto;
 import com.week07.week07.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
