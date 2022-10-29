@@ -3,25 +3,16 @@ package com.week07.service;
 
 import com.week07.domain.Member;
 import com.week07.domain.Post;
+import com.week07.dto.GlobalResDto;
 import com.week07.dto.request.PostReqDto;
+import com.week07.dto.request.PostUpdateReqDto;
+import com.week07.exception.ErrorCode;
+import com.week07.repository.MemberRepository;
 import com.week07.repository.PostRepository;
+import com.week07.s3.AmazonS3ResourceStorage;
+import com.week07.s3.MultipartUtil;
 import com.week07.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import com.week07.week07.domain.Member;
-import com.week07.week07.domain.Post;
-import com.week07.week07.dto.GlobalResDto;
-import com.week07.week07.dto.request.PostReqDto;
-import com.week07.week07.dto.request.PostUpdateReqDto;
-import com.week07.week07.exception.ErrorCode;
-import com.week07.week07.repository.MemberRepository;
-import com.week07.week07.repository.PostRepository;
-import com.week07.week07.s3.AmazonS3ResourceStorage;
-import com.week07.week07.s3.MultipartUtil;
-import com.week07.week07.security.UserDetailsImpl;
-import lombok.RequiredArgsConstructor;
-import org.apache.catalina.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -38,7 +29,9 @@ public class PostService {
     private final AmazonS3ResourceStorage amazonS3ResourceStorage;
 
     //포스트 작성
-    public GlobalResDto<?> createPost(PostReqDto postReqDto, UserDetailsImpl userDetails, MultipartFile multipartFile){
+    public GlobalResDto<?> createPost(PostReqDto postReqDto,
+                                      UserDetailsImpl userDetails,
+                                      MultipartFile multipartFile){
         Member member = isPresentMember(userDetails);
         if(member == null){
             return GlobalResDto.fail(ErrorCode.NOT_FOUND_MEMBER);
@@ -63,7 +56,7 @@ public class PostService {
     }
 
     @Transactional
-    public GlobalResDto<?> updatePost(PostUpdateReqDto postUpdateReqDto,UserDetailsImpl userDetails, MultipartFile multipartFile,Long postId){
+    public GlobalResDto<?> updatePost(PostUpdateReqDto postUpdateReqDto, UserDetailsImpl userDetails, MultipartFile multipartFile, Long postId){
         Post post = isPresentPost(postId);
         if(post==null){
             return GlobalResDto.fail(ErrorCode.NOT_FOUND_POST);

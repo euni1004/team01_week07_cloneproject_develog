@@ -1,11 +1,11 @@
-package com.week07.week07.controller;
+package com.week07.controller;
 
 import com.google.gson.Gson;
-import com.week07.week07.dto.GlobalResDto;
-import com.week07.week07.dto.request.PostReqDto;
-import com.week07.week07.dto.request.PostUpdateReqDto;
-import com.week07.week07.security.UserDetailsImpl;
-import com.week07.week07.service.PostService;
+import com.week07.dto.GlobalResDto;
+import com.week07.dto.request.PostReqDto;
+import com.week07.dto.request.PostUpdateReqDto;
+import com.week07.security.UserDetailsImpl;
+import com.week07.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;

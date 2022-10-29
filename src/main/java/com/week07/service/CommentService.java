@@ -6,10 +6,11 @@ import com.week07.domain.Post;
 import com.week07.domain.Member;
 import com.week07.dto.GlobalResDto;
 import com.week07.dto.request.CommentReqDto;
+import com.week07.dto.response.CommentResDto;
 import com.week07.exception.CustomException;
-import com.week07.exception.ErrorCode;
 import com.week07.repository.CommentRepository;
 import com.week07.repository.PostRepository;
+import com.week07.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -19,15 +20,17 @@ public class CommentService {
 
     private final CommentRepository commentRepository;
     private final PostRepository postRepository;
-    public GlobalResDto<?> create(Long postId, CommentReqDto commentReqDto, Member account) {
-        Post post = postRepository.findById(postId).orElseThrow(
-                () -> new CustomException(ErrorCode.NOT_FOUND_POST)
-        );
+    public GlobalResDto<?> create(Long postId, CommentReqDto commentReqDto, Member member) {
+//        Post post = postRepository.findById(postId).orElseThrow(
+//                () -> new CustomException(ErrorCode.NOT_FOUND_MEMBER)
+//        );
 
-        Comment comment = new Comment(commentReqDto,account);
+        Comment comment = new Comment(commentReqDto,member);
         commentRepository.save(comment);
 
-        return GlobalResDto.success(null,"댓글 작성 완료");
+        CommentResDto commentResDto = new CommentResDto(member, comment);
+
+        return GlobalResDto.success(commentResDto,"댓글 작성 완료");
 
     }
 

@@ -3,7 +3,7 @@ package com.week07.dto.request;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Lob;
+import java.util.List;
 
 
 @Getter
@@ -11,12 +11,9 @@ import javax.persistence.Lob;
 public class PostReqDto {
 
 
-    private String title;
+    private String postTitle;
 
-    @Lob
-    private String imgUrl;
+    private String postContent;
 
-    private String content;
-
-    private String tag;
+    private List<String> postTag;
 }
