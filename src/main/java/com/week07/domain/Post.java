@@ -53,13 +53,7 @@ public class Post extends Timestamped {
 
     public void update(PostUpdateReqDto postUpdateReqDto,String modifyPost){
         this.modifyPost = modifyPost;
-
-        if(postUpdateReqDto.getPostContent()!=null){
-            this.content = postUpdateReqDto.getPostContent();
-        }
-//        if(postUpdateReqDto.getPostTag()!=null){
-//            this.ta
-//        }
+        this.content = postUpdateReqDto.getPostContent();
     }
 
     public Post(PostReqDto postReqDto,Member member,String path, String url){

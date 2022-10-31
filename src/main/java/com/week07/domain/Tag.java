@@ -23,5 +23,4 @@ public class Tag {
     @JoinColumn(name = "postId")
     private Post post;
 
-
 }
