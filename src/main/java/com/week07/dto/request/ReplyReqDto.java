@@ -3,12 +3,9 @@ package com.week07.dto.request;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Getter
 @NoArgsConstructor
-public class PostUpdateReqDto {
+public class ReplyReqDto {
 
-    private String postContent;
-
+    private String replyComment;
 }

@@ -39,11 +39,8 @@ public class PostController {
     @PutMapping("/{postId}")
     public GlobalResDto<?> updatePost(@AuthenticationPrincipal UserDetailsImpl userDetails,
                                       @PathVariable Long postId,
-                                      @RequestParam(required = false) String content,
-                                      @RequestPart(required = false) MultipartFile multipartFile) {
-        Gson gson = new Gson();
-        PostUpdateReqDto postUpdateReqDto = gson.fromJson(content, PostUpdateReqDto.class);
-        return postService.updatePost(postUpdateReqDto, userDetails, multipartFile, postId);
+                                      @RequestBody PostUpdateReqDto postUpdateReqDto) {
+        return postService.updatePost(userDetails, postId, postUpdateReqDto);
     }
 
     @DeleteMapping("{postId}")

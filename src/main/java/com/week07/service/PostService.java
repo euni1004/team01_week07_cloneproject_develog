@@ -33,7 +33,6 @@ public class PostService {
         if (member == null) {
             return GlobalResDto.fail(ErrorCode.NOT_FOUND_MEMBER);
         }
-
         if (postReqDto.getPostTitle().isEmpty()) {
             return GlobalResDto.fail(ErrorCode.MUST_HAVE_TITLE);
         }
@@ -57,7 +56,7 @@ public class PostService {
     }
 
     @Transactional
-    public GlobalResDto<?> updatePost(PostUpdateReqDto postUpdateReqDto, UserDetailsImpl userDetails, MultipartFile multipartFile, Long postId) {
+    public GlobalResDto<?> updatePost(UserDetailsImpl userDetails, Long postId, PostUpdateReqDto postUpdateReqDto) {
         Post post = isPresentPost(postId);
         if (post == null) {
             return GlobalResDto.fail(ErrorCode.NOT_FOUND_POST);
@@ -70,7 +69,6 @@ public class PostService {
         post.update(postUpdateReqDto, "수정됨");
         postRepository.save(post);
         return GlobalResDto.success(null, "게시물 수정");
-        //회의 필요
     }
 
     @Transactional

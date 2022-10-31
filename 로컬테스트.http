@@ -24,8 +24,8 @@ POST http://localhost:8080/team01/member/login
 Content-Type: application/json
 
 {
-  "userid" : "asd123",
-  "pw" : "ASASd123!"
+  "userId" : "asd123",
+  "pw" : "Aasd123!"
 }
 > {% client.global.set("Access_Token", response.headers.valueOf("Access_Token"));
 client.log("생성된 Access_Token : "+client.global.get("Access_Token")); %}
@@ -37,14 +37,13 @@ Access_Token: {{Access_Token}}
 Content-Type: application/json
 
 {
-  "postImg": "URL",
   "postTitle": "제목",
   "postContent": "내용",
   "postTag": ["태그1","태그2"]
 }
 
 ###글 수정
-PUT http://localhost:8080//team01/post/1
+PUT http://localhost:8080/team01/post/1
 Access_Token: {{Access_Token}}
 Content-Type: application/json
 
@@ -110,7 +109,7 @@ Content-Type: application/json
 }
 
 ###댓글 수정
-PUT http://localhost:8080/comment/1
+PUT http://localhost:800/comment/1
 Access_Token: {{Access_Token}}
 Content-Type: application/json
 
@@ -124,10 +123,6 @@ DELETE http://localhost:8080/comment/1
 Access_Token: {{Access_Token}}
 Content-Type: application/json
 
-{
-  "postId": 1,
-  "comments": "댓글22입니다"
-}
 
 
 ###좋아요 생성
