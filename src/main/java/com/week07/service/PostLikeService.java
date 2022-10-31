@@ -5,7 +5,6 @@ import com.week07.domain.Post;
 import com.week07.domain.PostLike;
 import com.week07.dto.GlobalResDto;
 import com.week07.exception.ErrorCode;
-import com.week07.repository.MemberRepository;
 import com.week07.repository.PostLikeRepository;
 import com.week07.repository.PostRepository;
 import com.week07.security.UserDetailsImpl;
@@ -29,6 +28,11 @@ public class PostLikeService {
         Post post = isPresentPost(postId);
         if (post == null) {
             return GlobalResDto.fail(ErrorCode.NOT_FOUND_POST);
+        }
+
+        PostLike postLike1 = isPresentPostLike(member,post);
+        if(postLike1!=null){
+            return GlobalResDto.fail(ErrorCode.DUPLICATED_POSTLIEK);
         }
 
         PostLike postLike = new PostLike(member, post);

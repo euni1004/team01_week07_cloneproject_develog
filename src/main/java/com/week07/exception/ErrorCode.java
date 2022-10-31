@@ -22,6 +22,7 @@ public enum ErrorCode {
 
     //postlike
     NOT_FOUND_POSTLIKE(HttpStatus.NOT_FOUND.value(), "PL001", "좋아요한 이력이 존재하지 않습니다."),
+    DUPLICATED_POSTLIEK(HttpStatus.BAD_REQUEST.value(),"PL002","좋아요는 한번만 가능합니다."),
 
     // Comment
     NOT_FOUND_COMMENT(HttpStatus.NOT_FOUND.value(), "C001", "해당 댓글을 찾을 수 없습니다"),
