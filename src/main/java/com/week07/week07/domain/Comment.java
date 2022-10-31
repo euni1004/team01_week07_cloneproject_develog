@@ -16,17 +16,22 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long commentId;
 
-    @Column(nullable = true)
     private String comment;
 
+    @ManyToOne
+    @JoinColumn(name = "postId")
+    @JsonIgnore
+    private Post post;
 
     @ManyToOne
     @JoinColumn(name = "memberId")
     @JsonIgnore
     private Member member;
 
-    public Comment(CommentReqDto commentReqDto, Member member) {
+    public Comment(CommentReqDto commentReqDto, Post post, Member member) {
         this.comment = commentReqDto.getComment();
+        this.post = post;
         this.member = member;
     }
+
 }

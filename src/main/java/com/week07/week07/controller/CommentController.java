@@ -18,7 +18,7 @@ public class CommentController {
     @PostMapping("/{postId}")
     public GlobalResDto<?> createComment(@PathVariable Long postId,
                                          @RequestBody CommentReqDto commentReqDto,
-                                         @AuthenticationPrincipal UserDetailsImpl userDetails){
+                                         @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return commentService.create(postId, commentReqDto, userDetails.getAccount());
     }
 

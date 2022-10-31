@@ -1,8 +1,8 @@
 package com.week07.week07.domain;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.week07.week07.dto.request.PostReqDto;
-//import com.week07.week07.dto.request.tagListReqDto;
 import com.week07.week07.dto.request.PostUpdateReqDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -20,22 +20,28 @@ public class Post extends Timestamped {
 
 
     @Id
+    @Column(name = "postId")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long postId;
 
 
     private String title;
+
+    private String modifyPost;
     @Lob
     private String imgUrlPath;
+
+    private String imgUrl;
 
     private String content;
 
     @ManyToOne
-    @JoinColumn(name = "account_id")
+    @JoinColumn(name = "memberId")
+    @JsonIgnore
     private Member member;
 
-//    @OneToMany(mappedBy = "post", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
-//    private List<Comment> comment = new ArrayList<>();
+    @OneToMany(mappedBy = "post", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    private List<Comment> comment = new ArrayList<>();
 
 //    @OneToMany(mappedBy = "post", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
 //    private List<Tag> tag = new ArrayList<>();
@@ -45,7 +51,9 @@ public class Post extends Timestamped {
         this.content = postReqDto.getPostContent();
     }
 
-    public void update(PostUpdateReqDto postUpdateReqDto){
+    public void update(PostUpdateReqDto postUpdateReqDto,String modifyPost){
+        this.modifyPost = modifyPost;
+
         if(postUpdateReqDto.getPostContent()!=null){
             this.content = postUpdateReqDto.getPostContent();
         }
@@ -54,9 +62,10 @@ public class Post extends Timestamped {
 //        }
     }
 
-    public Post(PostReqDto postReqDto,Member member,String path){
+    public Post(PostReqDto postReqDto,Member member,String path, String url){
         this.title = postReqDto.getPostTitle();
         this.imgUrlPath = path;
+        this.imgUrl = url;
         this.member = member;
         this.content = postReqDto.getPostContent();
     }

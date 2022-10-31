@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Entity
@@ -32,17 +34,28 @@ public class Member extends Timestamped{
 
     private String userImgPath;
 
+    private String userImgUrl;
+
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    private List<Post> postList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    private List<Comment> commentList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member",fetch = FetchType.LAZY,cascade = CascadeType.REMOVE)
+    private List<PostLike> postLikeList = new ArrayList<>();
+
 //    @ElementCollection
 //    private List<String> userTag;
 
-    public Member(MemberReqDto memberReqDto, String normalPath) {
+    public Member(MemberReqDto memberReqDto, String normalPath, String normalUrl) {
         this.userName = memberReqDto.getUserName();
         this.userId = memberReqDto.getUserId();
         this.pw = memberReqDto.getPw();
         this.intro = memberReqDto.getIntro();
         this.userImgPath = normalPath;
+        this.userImgUrl = normalUrl;
     }
-
 
     public boolean validatePassword(PasswordEncoder passwordEncoder, String pw) {
         return !passwordEncoder.matches(pw, this.pw);

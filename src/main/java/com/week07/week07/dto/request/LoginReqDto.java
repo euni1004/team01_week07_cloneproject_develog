@@ -10,12 +10,12 @@ import javax.validation.constraints.NotBlank;
 public class LoginReqDto {
 
     @NotBlank
-    private String userid;
+    private String userId;
     @NotBlank
     private String pw;
 
     public LoginReqDto(String userid) {
-        this.userid = userid;
+        this.userId = userid;
     }
 
 }

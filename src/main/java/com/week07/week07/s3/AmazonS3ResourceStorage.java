@@ -20,7 +20,7 @@ public class AmazonS3ResourceStorage {
     private String bucket;
     private final AmazonS3Client amazonS3Client;
 
-    public void store(String  path, MultipartFile multipartFile) {
+    public void store(String path, MultipartFile multipartFile) throws IOException {
         File file = new File(Objects.requireNonNull(multipartFile.getOriginalFilename()));
         try {
             file = convert(multipartFile);
@@ -36,23 +36,20 @@ public class AmazonS3ResourceStorage {
     }
 
     public String getimg(String path) {
-        return amazonS3Client.getUrl(bucket,path).toString();
+        return amazonS3Client.getUrl(bucket, path).toString();
     }
 
     public void delimg(String path) {
-        amazonS3Client.deleteObject(bucket,path);
+        amazonS3Client.deleteObject(bucket, path);
     }
 
     public File convert(MultipartFile file) throws IOException {
-        File convFile = new File(file.getOriginalFilename());
+        File convFile = new File(Objects.requireNonNull(file.getOriginalFilename()));
         convFile.createNewFile();
         FileOutputStream fos = new FileOutputStream(convFile);
         fos.write(file.getBytes());
         fos.close();
         return convFile;
     }
-
-
-
 
 }

@@ -3,9 +3,7 @@ package com.week07.week07.dto.request;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Lob;
 import java.util.List;
-
 
 @Getter
 @NoArgsConstructor

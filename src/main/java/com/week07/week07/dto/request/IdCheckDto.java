@@ -5,7 +5,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class idCheckDto {
+public class IdCheckDto {
 
-    private String userid;
+    private String userId;
 }

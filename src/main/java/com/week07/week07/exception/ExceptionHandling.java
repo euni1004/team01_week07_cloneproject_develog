@@ -1,11 +1,10 @@
 package com.week07.week07.exception;
 
-import org.apache.tomcat.util.http.fileupload.impl.SizeLimitExceededException;
+import com.week07.week07.dto.GlobalResDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-
 
 @RestControllerAdvice
 public class ExceptionHandling {
@@ -26,4 +25,8 @@ public class ExceptionHandling {
     }
 
     //런타임 예외처리 해야함 (알수없는 오류)
+    @ExceptionHandler(RuntimeException.class)
+    public Object runTimeException(RuntimeException e) {
+        return GlobalResDto.fail(ErrorCode.NOT_FOUND);
+    }
 }

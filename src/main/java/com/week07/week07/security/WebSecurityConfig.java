@@ -49,7 +49,7 @@ public class WebSecurityConfig {
         CorsConfiguration configuration = new CorsConfiguration();
 
         configuration.setAllowedOriginPatterns(Arrays.asList("*"));
-        configuration.setAllowedMethods(Arrays.asList("POST","GET","DELETE","PUT","PATCH"));  //프론트에서 보내는 CRUD 허용
+        configuration.setAllowedMethods(Arrays.asList("POST", "GET", "DELETE", "PUT", "PATCH"));  //프론트에서 보내는 CRUD 허용
         configuration.setAllowedHeaders(Arrays.asList("*")); //프론트에서 보내는 모든 해더 허용
         configuration.setAllowCredentials(true);
         configuration.addExposedHeader("*"); //header 정보를 다 보여줌
@@ -81,6 +81,7 @@ public class WebSecurityConfig {
         http
                 .authorizeRequests()
                 .antMatchers("/member/**").permitAll()
+                .antMatchers("/getPost/**").permitAll()
 
                 .anyRequest().authenticated()
 

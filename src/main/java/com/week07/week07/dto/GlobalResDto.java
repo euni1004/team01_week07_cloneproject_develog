@@ -15,12 +15,12 @@ public class GlobalResDto<T> {
     private T msg;
 
 
-    public static <T> GlobalResDto<Object> success(T data,String msg) {
-        return new GlobalResDto<>(200,data,msg);
+    public static <T> GlobalResDto<Object> success(T data, String msg) {
+        return new GlobalResDto<>(200, data, msg);
     }
 
     public static GlobalResDto<String> fail(ErrorCode errorCode) {
-        return new GlobalResDto<>(errorCode.getStatus(),errorCode.getCode(),errorCode.getMessage());
+        return new GlobalResDto<>(errorCode.getStatus(), errorCode.getCode(), errorCode.getMessage());
     }
 
 }

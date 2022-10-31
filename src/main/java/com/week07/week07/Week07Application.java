@@ -8,12 +8,12 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 @EnableJpaAuditing
 public class Week07Application {
 
-	static {
-		System.setProperty("com.amazonaws.sdk.disableEc2Metadata", "true");
-	}
+    static {
+        System.setProperty("com.amazonaws.sdk.disableEc2Metadata", "true");
+    }
 
-	public static void main(String[] args) {
-		SpringApplication.run(Week07Application.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(Week07Application.class, args);
+    }
 
 }

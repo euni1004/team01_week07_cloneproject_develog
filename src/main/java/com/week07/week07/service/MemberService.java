@@ -5,7 +5,7 @@ import com.week07.week07.domain.RefreshToken;
 import com.week07.week07.dto.GlobalResDto;
 import com.week07.week07.dto.request.LoginReqDto;
 import com.week07.week07.dto.request.MemberReqDto;
-import com.week07.week07.dto.request.idCheckDto;
+import com.week07.week07.dto.request.IdCheckDto;
 import com.week07.week07.dto.response.LoginResDto;
 import com.week07.week07.exception.ErrorCode;
 import com.week07.week07.jwt.JwtUtil;
@@ -26,17 +26,18 @@ import java.util.Optional;
 public class MemberService {
 
     String normalPath = "images/normal_profile.jpg";
+    String normalUrl = "https://eunibucket.s3.ap-northeast-2.amazonaws.com/images/normal_profile.jpg";
     private final JwtUtil jwtUtil;
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
     private final RefreshTokenRepository refreshTokenRepository;
     private final AmazonS3ResourceStorage amazonS3ResourceStorage;
 
-    public GlobalResDto<?> idCheck(idCheckDto idCheckDto) {
-        if (null != isPresentMember(idCheckDto.getUserid())) {
+    public GlobalResDto<?> idCheck(IdCheckDto idCheckDto) {
+        if (null != isPresentMember(idCheckDto.getUserId())) {
             return GlobalResDto.fail(ErrorCode.DUPLICATED_NICKNAME);
         }
-        return GlobalResDto.success(null,"사용가능한 아이디 입니다.");
+        return GlobalResDto.success(null, "사용가능한 아이디 입니다.");
     }
 
     public GlobalResDto<?> signup(MemberReqDto memberReqDto) {
@@ -44,42 +45,42 @@ public class MemberService {
             return GlobalResDto.fail(ErrorCode.NOT_FOUND_MEMBER);
         }
 
-        if(!memberReqDto.getPw().equals(memberReqDto.getPwCheck())){
+        if (!memberReqDto.getPw().equals(memberReqDto.getPwCheck())) {
             return GlobalResDto.fail(ErrorCode.WRONG_PASSWORD);
         }
 
         memberReqDto.setEncodePwd(passwordEncoder.encode(memberReqDto.getPw()));
-        Member member = new Member(memberReqDto,normalPath);
+        Member member = new Member(memberReqDto, normalPath, normalUrl);
 
         memberRepository.save(member);
-        return GlobalResDto.success(null,"회원가입이 완료되었습니다.");
+        return GlobalResDto.success(null, "회원가입이 완료되었습니다.");
     }
 
     public GlobalResDto<?> login(LoginReqDto loginReqDto, HttpServletResponse response) {
-        Member member = isPresentMember(loginReqDto.getUserid());
-        if(member==null){
+        Member member = isPresentMember(loginReqDto.getUserId());
+        if (member == null) {
             return GlobalResDto.fail(ErrorCode.NOT_FOUND_MEMBER);
         }
 
-        if(member.validatePassword(passwordEncoder, loginReqDto.getPw())){
+        if (member.validatePassword(passwordEncoder, loginReqDto.getPw())) {
             return GlobalResDto.fail(ErrorCode.WRONG_PASSWORD);
         }
-        TokenDto tokenDto = jwtUtil.createAllToken(loginReqDto.getUserid());
+        TokenDto tokenDto = jwtUtil.createAllToken(loginReqDto.getUserId());
 
-        Optional<RefreshToken> refreshToken = refreshTokenRepository.findByAccountUserId(loginReqDto.getUserid());
+        Optional<RefreshToken> refreshToken = refreshTokenRepository.findByAccountUserId(loginReqDto.getUserId());
 
-        if(refreshToken.isPresent()){
+        if (refreshToken.isPresent()) {
             refreshTokenRepository.save(refreshToken.get().updateToken(tokenDto.getRefreshToken()));
-        }else{
-            RefreshToken newToken = new RefreshToken(tokenDto.getRefreshToken(),loginReqDto.getUserid());
+        } else {
+            RefreshToken newToken = new RefreshToken(tokenDto.getRefreshToken(), loginReqDto.getUserId());
             refreshTokenRepository.save(newToken);
         }
 
-        setHeader(response,tokenDto);
-        String userImgUrl=amazonS3ResourceStorage.getimg(member.getUserImgPath());
+        setHeader(response, tokenDto);
+        String userImgUrl = amazonS3ResourceStorage.getimg(member.getUserImgPath());
 
-        LoginResDto loginResDto = new LoginResDto(member,userImgUrl);
-        return GlobalResDto.success(loginResDto,member.getUserName()+"님 반갑습니다.");
+        LoginResDto loginResDto = new LoginResDto(member, userImgUrl);
+        return GlobalResDto.success(loginResDto, member.getUserName() + "님 반갑습니다.");
     }
 
     @Transactional(readOnly = true)

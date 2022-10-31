@@ -14,7 +14,7 @@ public class LoginResDto {
     private String userImgUrl;
     private String intro;
 
-    public LoginResDto(Member member,String userImgUrl) {
+    public LoginResDto(Member member, String userImgUrl) {
         this.userId = member.getUserId();
         this.userImgUrl = userImgUrl;
         this.intro = member.getIntro();
