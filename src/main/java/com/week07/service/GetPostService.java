@@ -33,15 +33,10 @@ public class GetPostService {
     private final PostLikeRepository postLikeRepository;
     private final CommentRepository commentRepository;
 
-    public GlobalResDto<?> getAllPost(UserDetailsImpl userDetails) {
-
-        Member member = isPresentMember(userDetails);
-        if (member == null) {
-            return GlobalResDto.fail(ErrorCode.NOT_FOUND_MEMBER);
-        }
+    public GlobalResDto<?> getAllPost() {
 
         List<Post> postList = postRepository.findAll();
-        List<GetAllPostResDto> getAllPostResDtoList = toGetAllPostResDto(postList, member);
+        List<GetAllPostResDto> getAllPostResDtoList = toGetAllPostResDto(postList);
         return GlobalResDto.success(getAllPostResDtoList, null);
     }
 
@@ -58,10 +53,11 @@ public class GetPostService {
             return GlobalResDto.fail(ErrorCode.NOT_FOUND_POST);
         }
 
+        List<String> postImg = post.getImgUrl();
         String countTime = countTime(post.getCreatedAt());
         boolean userLike = isPresentLike(member, post);
         Long countLike = countLike(post);
-        GetOnePostDto getOnePostDto = GetOnePostDto.toGetOnePostDto(post, countTime, userLike, countLike);
+        GetOnePostDto getOnePostDto = GetOnePostDto.toGetOnePostDto(post, countTime, userLike, countLike, postImg);
 
         return GlobalResDto.success(getOnePostDto, null);
     }
@@ -79,20 +75,19 @@ public class GetPostService {
 
         List<Post> postList = postRepository.findAllByTitleContainingOrContentContaining(searchKeyword, searchKeyword);
 
-        List<GetAllPostResDto> getAllPostResDtoList = toGetAllPostResDto(postList, member);
+        List<GetAllPostResDto> getAllPostResDtoList = toGetAllPostResDto(postList);
         return GlobalResDto.success(getAllPostResDtoList, null);
     }
 
-    public List<GetAllPostResDto> toGetAllPostResDto(List<Post> postList, Member member) {
+    public List<GetAllPostResDto> toGetAllPostResDto(List<Post> postList) {
         List<GetAllPostResDto> getAllPostResDtoList = new ArrayList<>();
 
         for (Post post : postList) {
             String countTime = countTime(post.getCreatedAt());
             String countDay = countDay(post.getCreatedAt());
-            boolean userLike = isPresentLike(member, post);
             Long countLike = countLike(post);
             Long countCmt = countCmt(post);
-            GetAllPostResDto getAllPostResDto = GetAllPostResDto.toGetAllPostResDto(post, countTime, countDay, userLike, countLike, countCmt);
+            GetAllPostResDto getAllPostResDto = GetAllPostResDto.toGetAllPostResDto(post, countTime, countDay, countLike, countCmt);
             getAllPostResDtoList.add(getAllPostResDto);
         }
 
@@ -145,14 +140,14 @@ public class GetPostService {
 
         if (period.getDays() < 1) {
             if (betweenTime <= 60) {
-                countTime = "1분 전";
+                countTime = "약 1분 전";
             } else if (betweenTime <= 6000) {
-                countTime = (betweenTime / 60) + "분 전";
+                countTime = "약 "+(betweenTime / 60) + "분 전";
             } else if (betweenTime <= 86400) {
-                countTime = (betweenTime / 60 / 60) + "시간 전";
+                countTime = "약 "+(betweenTime / 60 / 60) + "시간 전";
             }
         } else if (period.getDays() < 7) {
-            countTime = period.getDays() + "일 전";
+            countTime = "약 "+period.getDays() + "일 전";
         } else {
             countTime = localDateTime.format(DateTimeFormatter.ofPattern("MM월 dd일 HH시 mm분"));
         }

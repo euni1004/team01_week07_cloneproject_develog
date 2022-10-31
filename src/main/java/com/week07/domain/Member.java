@@ -60,4 +60,13 @@ public class Member extends Timestamped{
     public boolean validatePassword(PasswordEncoder passwordEncoder, String pw) {
         return !passwordEncoder.matches(pw, this.pw);
     }
+
+    public void updateIntro(String intro) {
+        this.intro = intro;
+    }
+
+    public void updateImg(String path, String url) {
+        this.userImgPath = path;
+        this.userImgUrl = url;
+    }
 }

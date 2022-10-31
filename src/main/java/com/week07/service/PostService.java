@@ -17,6 +17,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -28,7 +30,7 @@ public class PostService {
     private final AmazonS3ResourceStorage amazonS3ResourceStorage;
 
     //포스트 작성
-    public GlobalResDto<?> createPost(PostReqDto postReqDto, UserDetailsImpl userDetails, MultipartFile multipartFile) throws IOException {
+    public GlobalResDto<?> createPost(PostReqDto postReqDto, UserDetailsImpl userDetails, List<MultipartFile> multipartFiles) throws IOException {
         Member member = isPresentMember(userDetails);
         if (member == null) {
             return GlobalResDto.fail(ErrorCode.NOT_FOUND_MEMBER);
@@ -38,19 +40,23 @@ public class PostService {
             return GlobalResDto.fail(ErrorCode.MUST_HAVE_TITLE);
         }
 
-        String path;
-        String url;
-        if (multipartFile == null) {
-            path = "";
-            url = "";
+        List<String> paths = new ArrayList<>();
+        List<String> urls = new ArrayList<>();
+        if (multipartFiles == null) {
+            paths.add("");
+            urls.add("");
         } else {
-            path = MultipartUtil.createPath(MultipartUtil.createFileId(), MultipartUtil.getFormat(multipartFile.getContentType()));
-//            System.out.println(path);
-            amazonS3ResourceStorage.store(path, multipartFile);
-            url = amazonS3ResourceStorage.getimg(path);
+            for (MultipartFile multipartFile : multipartFiles) {
+                String path = MultipartUtil.createPath(MultipartUtil.createFileId(), MultipartUtil.getFormat(multipartFile.getContentType()));
+                System.out.println(path);
+                paths.add(path);
+                amazonS3ResourceStorage.store(path, multipartFile);
+                String url = amazonS3ResourceStorage.getimg(path);
+                urls.add(url);
+            }
         }
 
-        Post post = new Post(postReqDto, member, path, url);
+        Post post = new Post(postReqDto, member, paths, urls);
         postRepository.save(post);
 
         return GlobalResDto.success(null, "게시물 등록");
@@ -87,7 +93,10 @@ public class PostService {
             return GlobalResDto.fail(ErrorCode.NO_PERMISSION_DELETE);
         }
         if (!post.getImgUrlPath().isEmpty()) {
-            amazonS3ResourceStorage.delimg(post.getImgUrlPath());
+            List<String> paths = post.getImgUrlPath();
+            for (String path : paths) {
+                amazonS3ResourceStorage.delimg(path);
+            }
         }
         postRepository.deleteById(postId);
         return GlobalResDto.success(null, "삭제완료");

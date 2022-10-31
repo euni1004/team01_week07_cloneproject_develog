@@ -7,22 +7,20 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/getPost")
 public class GetPostController {
 
     private final GetPostService getPostService;
 
-    @GetMapping
-    public GlobalResDto<?> getAllPost(@AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return getPostService.getAllPost(userDetails);
+    @GetMapping("/getAllPost")
+    public GlobalResDto<?> getAllPost() {
+        return getPostService.getAllPost();
     }
 
-    @GetMapping("/{postId}")
+    @GetMapping("/getPost/{postId}")
     public GlobalResDto<?> getOnePost(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long postId) {
         return getPostService.getOnePost(userDetails, postId);
     }

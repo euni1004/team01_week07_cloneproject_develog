@@ -10,7 +10,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class GetAllPostResDto {
+public class MyPageReqDto {
 
     private Long postId;
     private List<String> postImg;
@@ -20,22 +20,18 @@ public class GetAllPostResDto {
     private String countTime;
     private String modifyPost;
     private String countDay;
-    private String userImg;
-    private String userName;
     private Long countLike;
     private Long countCmt;
 
-    public static GetAllPostResDto toGetAllPostResDto(Post post, String countTime, String countDay, Long countLike, Long countCmt) {
-        return new GetAllPostResDto(
+    public static MyPageReqDto toMyPageReqDto(Post post, String countTime, String countDay, Long countLike, Long countCmt, List<String> postImg) {
+        return new MyPageReqDto(
                 post.getPostId(),
-                post.getImgUrl(),
+                postImg,
                 post.getTitle(),
                 post.getContent(),
                 countTime,
                 post.getModifyPost(),
                 countDay,
-                post.getMember().getUserImgUrl(),
-                post.getMember().getUserName(),
                 countLike,
                 countCmt
         );

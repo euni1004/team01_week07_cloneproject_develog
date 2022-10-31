@@ -52,7 +52,7 @@ public class WebSecurityConfig {
         configuration.setAllowedMethods(Arrays.asList("POST", "GET", "DELETE", "PUT", "PATCH"));  //프론트에서 보내는 CRUD 허용
         configuration.setAllowedHeaders(Arrays.asList("*")); //프론트에서 보내는 모든 해더 허용
         configuration.setAllowCredentials(true);
-        configuration.addExposedHeader("*"); //header 정보를 다 보여줌
+        configuration.addExposedHeader("Access_Token"); //header 정보를 다 보여줌
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
@@ -81,6 +81,8 @@ public class WebSecurityConfig {
         http
                 .authorizeRequests()
                 .antMatchers("/member/**").permitAll()
+                .antMatchers("/getAllPost").permitAll()
+                .antMatchers("/getMyPage").permitAll()
 
                 .anyRequest().authenticated()
 

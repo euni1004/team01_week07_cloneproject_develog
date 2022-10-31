@@ -13,7 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 public class GetOnePostDto {
 
-    private String postImg;
+    private List<String> postImg;
     private String postTitle;
     private String postContent;
     //    private List<String> tag;
@@ -25,10 +25,10 @@ public class GetOnePostDto {
     private Long countLike;
     private List<Comment> comments;
 
-    public static GetOnePostDto toGetOnePostDto(Post post, String countTime, boolean userLike, Long countLike) {
+    public static GetOnePostDto toGetOnePostDto(Post post, String countTime, boolean userLike, Long countLike,List<String> postImg) {
 
         return new GetOnePostDto(
-                post.getImgUrl(),
+                postImg,
                 post.getTitle(),
                 post.getContent(),
                 countTime,

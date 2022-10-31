@@ -28,10 +28,11 @@ public class Post extends Timestamped {
     private String title;
 
     private String modifyPost;
-    @Lob
-    private String imgUrlPath;
+    @ElementCollection
+    private List<String> imgUrlPath;
 
-    private String imgUrl;
+    @ElementCollection
+    private List<String> imgUrl;
 
     private String content;
 
@@ -56,7 +57,7 @@ public class Post extends Timestamped {
         this.content = postUpdateReqDto.getPostContent();
     }
 
-    public Post(PostReqDto postReqDto,Member member,String path, String url){
+    public Post(PostReqDto postReqDto,Member member,List<String> path, List<String> url){
         this.title = postReqDto.getPostTitle();
         this.imgUrlPath = path;
         this.imgUrl = url;
