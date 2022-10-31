@@ -41,22 +41,7 @@ public class GetPostService {
         }
 
         List<Post> postList = postRepository.findAll();
-        List<GetAllPostResDto> getAllPostResDtoList = new ArrayList<>();
-
-        for (Post post : postList) {
-            String countTime = countTime(post.getCreatedAt());
-            String countDay = countDay(post.getCreatedAt());
-            boolean userLike = isPresentLike(member, post);
-            Long countLike = countLike(post);
-            Long countCmt = countCmt(post);
-            GetAllPostResDto getAllPostResDto = GetAllPostResDto.toGetAllPostResDto(post, countTime, countDay, userLike, countLike, countCmt);
-            getAllPostResDtoList.add(getAllPostResDto);
-        }
-
-        //좋아요순으로 내림차순 정렬
-        getAllPostResDtoList = getAllPostResDtoList.stream()
-                .sorted(Comparator.comparing(GetAllPostResDto::getCountLike).reversed()).collect(Collectors.toList());
-
+        List<GetAllPostResDto> getAllPostResDtoList = toGetAllPostResDto(postList, member);
         return GlobalResDto.success(getAllPostResDtoList, null);
     }
 
@@ -79,6 +64,43 @@ public class GetPostService {
         GetOnePostDto getOnePostDto = GetOnePostDto.toGetOnePostDto(post, countTime, userLike, countLike);
 
         return GlobalResDto.success(getOnePostDto, null);
+    }
+
+    public GlobalResDto<?> searchPost(UserDetailsImpl userDetails, String searchKeyword) {
+
+        Member member = isPresentMember(userDetails);
+        if (member == null) {
+            return GlobalResDto.fail(ErrorCode.NOT_FOUND_MEMBER);
+        }
+
+        if (searchKeyword.length() < 2) {
+            return GlobalResDto.fail(ErrorCode.KEYWORD_LENGTH_ERROR);
+        }
+
+        List<Post> postList = postRepository.findAllByTitleContainingOrContentContaining(searchKeyword, searchKeyword);
+
+        List<GetAllPostResDto> getAllPostResDtoList = toGetAllPostResDto(postList, member);
+        return GlobalResDto.success(getAllPostResDtoList, null);
+    }
+
+    public List<GetAllPostResDto> toGetAllPostResDto(List<Post> postList, Member member) {
+        List<GetAllPostResDto> getAllPostResDtoList = new ArrayList<>();
+
+        for (Post post : postList) {
+            String countTime = countTime(post.getCreatedAt());
+            String countDay = countDay(post.getCreatedAt());
+            boolean userLike = isPresentLike(member, post);
+            Long countLike = countLike(post);
+            Long countCmt = countCmt(post);
+            GetAllPostResDto getAllPostResDto = GetAllPostResDto.toGetAllPostResDto(post, countTime, countDay, userLike, countLike, countCmt);
+            getAllPostResDtoList.add(getAllPostResDto);
+        }
+
+        //좋아요순으로 내림차순 정렬
+        getAllPostResDtoList = getAllPostResDtoList.stream()
+                .sorted(Comparator.comparing(GetAllPostResDto::getCountLike).reversed()).collect(Collectors.toList());
+
+        return getAllPostResDtoList;
     }
 
     public Member isPresentMember(UserDetailsImpl userDetails) {
@@ -148,9 +170,9 @@ public class GetPostService {
 
         Period period = Period.between(postDate, nowDate);
 
-        if (period.getDays() == 1) {
+        if (period.getDays() == 0) {
             countDay = "오늘";
-        } else if (period.getDays() > 1 && period.getDays() <= 7) {
+        } else if (period.getDays() >= 1 && period.getDays() <= 7) {
             countDay = "일주일전";
         } else if (period.getDays() > 7 && period.getDays() <= 14) {
             countDay = "이주일전";
@@ -160,4 +182,6 @@ public class GetPostService {
 
         return countDay;
     }
+
+
 }

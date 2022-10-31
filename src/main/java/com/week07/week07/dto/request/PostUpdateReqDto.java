@@ -9,7 +9,11 @@ import java.util.List;
 @NoArgsConstructor
 public class PostUpdateReqDto {
 
+    private String postTitle;
+
     private String postContent;
 
     private List<String> postTag;
+
+    private String url;
 }

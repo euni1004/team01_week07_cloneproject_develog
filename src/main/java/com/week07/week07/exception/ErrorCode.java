@@ -18,6 +18,7 @@ public enum ErrorCode {
     NOT_FOUND_POST(HttpStatus.NOT_FOUND.value(), "P002", "포스트가 존재하지 않습니다."),
     NO_PERMISSION_CHANGE(HttpStatus.BAD_REQUEST.value(), "P003", "자신이 작성한 포스트만 수정가능합니다."),
     NO_PERMISSION_DELETE(HttpStatus.BAD_REQUEST.value(), "P004", "자신이 작성한 포스트만 삭제가능합니다"),
+    KEYWORD_LENGTH_ERROR(HttpStatus.BAD_REQUEST.value(),"P005","검색단어의 길이는 2이상입니다."),
 
     //postlike
     NOT_FOUND_POSTLIKE(HttpStatus.NOT_FOUND.value(), "PL001", "좋아요한 이력이 존재하지 않습니다."),
