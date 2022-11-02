@@ -7,6 +7,7 @@ import com.week07.domain.PostLike;
 import com.week07.dto.GlobalResDto;
 import com.week07.dto.response.GetAllPostResDto;
 import com.week07.dto.response.GetOnePostDto;
+import com.week07.exception.CustomException;
 import com.week07.exception.ErrorCode;
 import com.week07.repository.CommentRepository;
 import com.week07.repository.MemberRepository;
@@ -33,10 +34,19 @@ public class GetPostService {
     private final PostLikeRepository postLikeRepository;
     private final CommentRepository commentRepository;
 
-    public GlobalResDto<?> getAllPost() {
+    public GlobalResDto<?> getAllPostByLike() {
 
         List<Post> postList = postRepository.findAll();
         List<GetAllPostResDto> getAllPostResDtoList = toGetAllPostResDto(postList);
+        return GlobalResDto.success(getAllPostResDtoList, null);
+    }
+
+    public GlobalResDto<?> getAllPostByTime() {
+
+        List<Post> postList = postRepository.findAll();
+        List<GetAllPostResDto> getAllPostResDtoList = toGetAllPostResDto(postList);
+        getAllPostResDtoList = getAllPostResDtoList.stream()
+                .sorted(Comparator.comparing(GetAllPostResDto::getPostId).reversed()).collect(Collectors.toList());
         return GlobalResDto.success(getAllPostResDtoList, null);
     }
 
@@ -45,12 +55,12 @@ public class GetPostService {
 
         Member member = isPresentMember(userDetails);
         if (member == null) {
-            return GlobalResDto.fail(ErrorCode.NOT_FOUND_MEMBER);
+            throw new CustomException(ErrorCode.NOT_FOUND_MEMBER);
         }
 
         Post post = isPresentPost(postId);
         if (post == null) {
-            return GlobalResDto.fail(ErrorCode.NOT_FOUND_POST);
+            throw new CustomException(ErrorCode.NOT_FOUND_POST);
         }
 
         List<String> postImg = post.getImgUrl();
@@ -62,15 +72,10 @@ public class GetPostService {
         return GlobalResDto.success(getOnePostDto, null);
     }
 
-    public GlobalResDto<?> searchPost(UserDetailsImpl userDetails, String searchKeyword) {
-
-        Member member = isPresentMember(userDetails);
-        if (member == null) {
-            return GlobalResDto.fail(ErrorCode.NOT_FOUND_MEMBER);
-        }
+    public GlobalResDto<?> searchPost(String searchKeyword) {
 
         if (searchKeyword.length() < 2) {
-            return GlobalResDto.fail(ErrorCode.KEYWORD_LENGTH_ERROR);
+            throw new CustomException(ErrorCode.KEYWORD_LENGTH_ERROR);
         }
 
         List<Post> postList = postRepository.findAllByTitleContainingOrContentContaining(searchKeyword, searchKeyword);

@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class ExceptionHandling {
 
     @ExceptionHandler({CustomException.class})
-    protected ResponseEntity<ErrorResponse> handleCustomException(CustomException e) {
-        return ErrorResponse.toResponseEntity(e.getErrorCode());
+    protected Object handleCustomException(CustomException e) {
+        return GlobalResDto.fail(e.getErrorCode());
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -28,6 +28,6 @@ public class ExceptionHandling {
     //런타임 예외처리 해야함 (알수없는 오류)
     @ExceptionHandler(RuntimeException.class)
     public Object runTimeException(RuntimeException e) {
-        return GlobalResDto.fail(ErrorCode.NOT_FOUND);
+        throw new CustomException(ErrorCode.NOT_FOUND);
     }
 }

@@ -5,6 +5,7 @@ import com.week07.domain.Post;
 import com.week07.dto.GlobalResDto;
 import com.week07.dto.request.PostReqDto;
 import com.week07.dto.request.PostUpdateReqDto;
+import com.week07.exception.CustomException;
 import com.week07.exception.ErrorCode;
 import com.week07.repository.MemberRepository;
 import com.week07.repository.PostRepository;
@@ -33,11 +34,11 @@ public class PostService {
     public GlobalResDto<?> createPost(PostReqDto postReqDto, UserDetailsImpl userDetails, List<MultipartFile> multipartFiles) throws IOException {
         Member member = isPresentMember(userDetails);
         if (member == null) {
-            return GlobalResDto.fail(ErrorCode.NOT_FOUND_MEMBER);
+            throw new CustomException(ErrorCode.NOT_FOUND_MEMBER);
         }
 
         if (postReqDto.getPostTitle().isEmpty()) {
-            return GlobalResDto.fail(ErrorCode.MUST_HAVE_TITLE);
+            throw new CustomException(ErrorCode.MUST_HAVE_TITLE);
         }
 
         List<String> paths = new ArrayList<>();
@@ -66,11 +67,11 @@ public class PostService {
     public GlobalResDto<?> updatePost(UserDetailsImpl userDetails, Long postId, PostUpdateReqDto postUpdateReqDto) {
         Post post = isPresentPost(postId);
         if (post == null) {
-            return GlobalResDto.fail(ErrorCode.NOT_FOUND_POST);
+            throw new CustomException(ErrorCode.NOT_FOUND_POST);
         }
 
         if (!post.getMember().getUserId().equals(userDetails.getAccount().getUserId())) {
-            return GlobalResDto.fail(ErrorCode.NO_PERMISSION_CHANGE);
+            throw new CustomException(ErrorCode.NO_PERMISSION_CHANGE);
         }
 
         post.update(postUpdateReqDto, "수정됨");
@@ -82,15 +83,15 @@ public class PostService {
     public GlobalResDto<?> deletePost(Long postId, UserDetailsImpl userDetails) {
         Member member = isPresentMember(userDetails);
         if (member == null) {
-            return GlobalResDto.fail(ErrorCode.NOT_FOUND_MEMBER);
+            throw new CustomException(ErrorCode.NOT_FOUND_MEMBER);
         }
 
         Post post = isPresentPost(postId);
         if (post == null) {
-            return GlobalResDto.fail(ErrorCode.NOT_FOUND_POST);
+            throw new CustomException(ErrorCode.NOT_FOUND_POST);
         }
         if (!member.getMemberId().equals(post.getMember().getMemberId())) {
-            return GlobalResDto.fail(ErrorCode.NO_PERMISSION_DELETE);
+            throw new CustomException(ErrorCode.NO_PERMISSION_DELETE);
         }
         if (!post.getImgUrlPath().isEmpty()) {
             List<String> paths = post.getImgUrlPath();

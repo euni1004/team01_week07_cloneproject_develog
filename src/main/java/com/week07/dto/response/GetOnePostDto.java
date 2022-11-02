@@ -19,6 +19,7 @@ public class GetOnePostDto {
     //    private List<String> tag;
     private String countTime;
     private String modifyPost;
+    private String userId;
     private String userImg;
     private String userName;
     private boolean userLike;
@@ -33,6 +34,7 @@ public class GetOnePostDto {
                 post.getContent(),
                 countTime,
                 post.getModifyPost(),
+                post.getMember().getUserId(),
                 post.getMember().getUserImgUrl(),
                 post.getMember().getUserName(),
                 userLike,

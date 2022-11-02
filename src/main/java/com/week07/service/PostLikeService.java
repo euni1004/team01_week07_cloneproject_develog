@@ -4,6 +4,7 @@ import com.week07.domain.Member;
 import com.week07.domain.Post;
 import com.week07.domain.PostLike;
 import com.week07.dto.GlobalResDto;
+import com.week07.exception.CustomException;
 import com.week07.exception.ErrorCode;
 import com.week07.repository.PostLikeRepository;
 import com.week07.repository.PostRepository;
@@ -27,12 +28,12 @@ public class PostLikeService {
 
         Post post = isPresentPost(postId);
         if (post == null) {
-            return GlobalResDto.fail(ErrorCode.NOT_FOUND_POST);
+            throw new CustomException(ErrorCode.NOT_FOUND_POST);
         }
 
         PostLike postLike1 = isPresentPostLike(member,post);
         if(postLike1!=null){
-            return GlobalResDto.fail(ErrorCode.DUPLICATED_POSTLIEK);
+            throw new CustomException(ErrorCode.DUPLICATED_POSTLIEK);
         }
 
         PostLike postLike = new PostLike(member, post);
@@ -47,12 +48,12 @@ public class PostLikeService {
         Post post = isPresentPost(postId);
 
         if (post == null) {
-            return GlobalResDto.fail(ErrorCode.NOT_FOUND_POST);
+            throw new CustomException(ErrorCode.NOT_FOUND_POST);
         }
 
         PostLike postLike = isPresentPostLike(member, post);
         if (postLike == null) {
-            return GlobalResDto.fail(ErrorCode.NOT_FOUND_POSTLIKE);
+            throw new CustomException(ErrorCode.NOT_FOUND_POSTLIKE);
         }
 
         postLikeRepository.delete(postLike);

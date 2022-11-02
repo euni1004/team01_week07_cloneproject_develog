@@ -5,6 +5,7 @@ import com.week07.domain.Post;
 import com.week07.dto.GlobalResDto;
 import com.week07.dto.request.IntroReqDto;
 import com.week07.dto.response.MyPageReqDto;
+import com.week07.exception.CustomException;
 import com.week07.exception.ErrorCode;
 import com.week07.repository.MemberRepository;
 import com.week07.repository.PostRepository;
@@ -33,7 +34,7 @@ public class MyPageService {
     public GlobalResDto<?> postIntro(UserDetailsImpl userDetails, IntroReqDto introReqDto) {
         Member member = isPresentMember(userDetails);
         if(member == null){
-            return GlobalResDto.fail(ErrorCode.NOT_FOUND_MEMBER);
+            throw new CustomException(ErrorCode.NOT_FOUND_MEMBER);
         }
         member.updateIntro(introReqDto.getIntro());
         memberRepository.save(member);
@@ -43,7 +44,7 @@ public class MyPageService {
     public GlobalResDto<?> postImg(UserDetailsImpl userDetails, MultipartFile multipartFile) throws IOException {
         Member member = isPresentMember(userDetails);
         if(member == null){
-            return GlobalResDto.fail(ErrorCode.NOT_FOUND_MEMBER);
+            throw new CustomException(ErrorCode.NOT_FOUND_MEMBER);
         }
 
         String path ="";
@@ -71,7 +72,7 @@ public class MyPageService {
     public GlobalResDto<?> getMyPage(String userId) {
         Member member = isPresentMember2(userId);
         if(member==null){
-            return GlobalResDto.fail(ErrorCode.NOT_FOUND_MEMBER);
+            throw new CustomException(ErrorCode.NOT_FOUND_MEMBER);
         }
         List<Post> postList = isPresentPost(member);
         List<MyPageReqDto> myPageReqDtos = new ArrayList<>();

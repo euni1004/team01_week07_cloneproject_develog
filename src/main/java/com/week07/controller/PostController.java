@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -33,9 +34,17 @@ public class PostController {
 //        System.out.println(file);
         Gson gson = new Gson();
         PostReqDto postReqDto = gson.fromJson(contents, PostReqDto.class);
+//        System.out.println(multipartHttpServletRequest);
 //        System.out.println(postReqDto.getPostContent());
-        List<MultipartFile> multipartFiles = multipartHttpServletRequest.getFiles("file");
-        MultipartFile file = multipartFiles.get(0);
+        List<MultipartFile> multipartFiles = new ArrayList<>();
+        if(multipartHttpServletRequest ==null){
+            multipartFiles.add(null);
+        }else{
+            multipartFiles = multipartHttpServletRequest.getFiles("file");
+        }
+        System.out.println(multipartFiles);
+
+//        MultipartFile file = multipartFiles.get(0);
 //        System.out.println(multipartFiles.get(0).getOriginalFilename());
 //        System.out.println(multipartFiles.get(1).getOriginalFilename());
 //        return GlobalResDto.success(null,"hello");

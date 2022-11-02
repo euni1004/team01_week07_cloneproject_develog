@@ -11,11 +11,13 @@ import lombok.NoArgsConstructor;
 public class LoginResDto {
 
     private String userId;
+    private String userName;
     private String userImgUrl;
     private String intro;
 
     public LoginResDto(Member member, String userImgUrl) {
         this.userId = member.getUserId();
+        this.userName = member.getUserName();
         this.userImgUrl = userImgUrl;
         this.intro = member.getIntro();
     }

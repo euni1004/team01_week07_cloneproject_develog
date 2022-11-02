@@ -15,8 +15,7 @@ public class SearchPostController {
     private final GetPostService getPostService;
 
     @GetMapping
-    public GlobalResDto<?> searchPost(@AuthenticationPrincipal UserDetailsImpl userDetails,
-                                      @RequestParam(name = "content") String content) {
-        return getPostService.searchPost(userDetails,content);
+    public GlobalResDto<?> searchPost(@RequestParam(name = "content") String content) {
+        return getPostService.searchPost(content);
     }
 }

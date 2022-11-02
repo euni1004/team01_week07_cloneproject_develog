@@ -7,6 +7,7 @@ import com.week07.dto.request.LoginReqDto;
 import com.week07.dto.request.MemberReqDto;
 import com.week07.dto.request.IdCheckDto;
 import com.week07.dto.response.LoginResDto;
+import com.week07.exception.CustomException;
 import com.week07.exception.ErrorCode;
 import com.week07.jwt.JwtUtil;
 import com.week07.jwt.TokenDto;
@@ -33,20 +34,20 @@ public class MemberService {
     private final RefreshTokenRepository refreshTokenRepository;
     private final AmazonS3ResourceStorage amazonS3ResourceStorage;
 
-    public GlobalResDto<?> idCheck(IdCheckDto idCheckDto) {
+    public GlobalResDto<Object> idCheck(IdCheckDto idCheckDto) {
         if (null != isPresentMember(idCheckDto.getUserId())) {
-            return GlobalResDto.fail(ErrorCode.DUPLICATED_NICKNAME);
+            throw new CustomException(ErrorCode.DUPLICATED_NICKNAME);
         }
         return GlobalResDto.success(null, "사용가능한 아이디 입니다.");
     }
 
-    public GlobalResDto<?> signup(MemberReqDto memberReqDto) {
+    public GlobalResDto<Object> signup(MemberReqDto memberReqDto) {
         if (null != isPresentMember(memberReqDto.getUserId())) {
-            return GlobalResDto.fail(ErrorCode.NOT_FOUND_MEMBER);
+            throw new CustomException(ErrorCode.NOT_FOUND_MEMBER);
         }
 
         if (!memberReqDto.getPw().equals(memberReqDto.getPwCheck())) {
-            return GlobalResDto.fail(ErrorCode.WRONG_PASSWORD);
+            throw new CustomException(ErrorCode.WRONG_PASSWORD);
         }
 
         memberReqDto.setEncodePwd(passwordEncoder.encode(memberReqDto.getPw()));
@@ -57,13 +58,11 @@ public class MemberService {
     }
 
     public GlobalResDto<?> login(LoginReqDto loginReqDto, HttpServletResponse response) {
-        Member member = isPresentMember(loginReqDto.getUserId());
-        if (member == null) {
-            return GlobalResDto.fail(ErrorCode.NOT_FOUND_MEMBER);
-        }
+        Member member = memberRepository.findByUserId(loginReqDto.getUserId())
+                .orElseThrow(()-> new CustomException(ErrorCode.NOT_FOUND_MEMBER));
 
         if (member.validatePassword(passwordEncoder, loginReqDto.getPw())) {
-            return GlobalResDto.fail(ErrorCode.WRONG_PASSWORD);
+            throw new CustomException(ErrorCode.WRONG_PASSWORD);
         }
         TokenDto tokenDto = jwtUtil.createAllToken(loginReqDto.getUserId());
 
@@ -77,9 +76,8 @@ public class MemberService {
         }
 
         setHeader(response, tokenDto);
-        String userImgUrl = amazonS3ResourceStorage.getimg(member.getUserImgPath());
 
-        LoginResDto loginResDto = new LoginResDto(member, userImgUrl);
+        LoginResDto loginResDto = new LoginResDto(member, member.getUserImgUrl());
         return GlobalResDto.success(loginResDto, member.getUserName() + "님 반갑습니다.");
     }
 

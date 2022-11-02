@@ -15,10 +15,16 @@ public class GetPostController {
 
     private final GetPostService getPostService;
 
-    @GetMapping("/getAllPost")
-    public GlobalResDto<?> getAllPost() {
-        return getPostService.getAllPost();
+    @GetMapping("/getAllPostByLike")
+    public GlobalResDto<?> getAllPostByLike() {
+        return getPostService.getAllPostByLike();
     }
+
+    @GetMapping("/getAllPostByTime")
+    public GlobalResDto<?> getAllPostByTime() {
+        return getPostService.getAllPostByTime();
+    }
+
 
     @GetMapping("/getPost/{postId}")
     public GlobalResDto<?> getOnePost(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long postId) {
