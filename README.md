@@ -43,4 +43,4 @@
 
 ## 📜 ERD Table
 
-![image](https://user-images.githubusercontent.com/99253403/198083569-a8d7786c-97f2-4266-9034-52bdc22d8c7f.png)
+![image](https://user-images.githubusercontent.com/113872554/199542267-f6fef378-126a-42e5-a7da-52bcf59743ff.png)
