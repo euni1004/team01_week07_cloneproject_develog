@@ -6,7 +6,7 @@
 
 
 
-📅 프로젝트 기간 : 2022.10.28 ~ 2022.11.04
+📅 프로젝트 기간 : 2022.10.28 ~ 2022.11.03
 
 ## 👨‍👩‍👧‍👦 Our Team 
 
@@ -24,7 +24,7 @@
 <img src="https://img.shields.io/badge/AmazonS3-569A31?style=flat-square&logo=AmazonS3&logoColor=white"/>  <img src="https://img.shields.io/badge/AmazonEC2-FF9900?style=flat-square&logo=AmazonEC2&logoColor=white"/>  <img src="https://img.shields.io/badge/AmazonRDS-527FFF?style=flat-square&logo=AmazonRDS&logoColor=white"/>  <img src="https://img.shields.io/badge/MySQL-4479A1?style=flat-square&logo=MySQL&logoColor=white"/>  <img src="https://img.shields.io/badge/Ubuntu-E95420?style=flat-square&logo=Ubuntu&logoColor=white"/>
 
 ## [:star: 프로젝트 팀 노션](https://joyfive.notion.site/C-1-SA-582e3f58ec414bdaa30730374620cf47) :star:
-
+https://joyfive.notion.site/C-1-SA-582e3f58ec414bdaa30730374620cf47
 
 ## 🏀 Trouble Shooting
 
