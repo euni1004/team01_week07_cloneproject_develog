@@ -12,7 +12,7 @@
 
 |  공은희  |  김병현   |  원민재   |  오기쁨  |        박지윤        |조민지|
 | :------: | :-------: | :-------: | :------: | :------------------: |:-----:|
-| @euni1004 | @KimByeungHyun | @meruberu | @joyfive | tjdghkek88@gmail.com |ㅁㄴㅇㅁㄴㅇ|
+| @euni1004 | @KimByeungHyun | @meruberu | @joyfive | @verocony |@minzzjo|
 |   BE    |    BE    |    BE    |   FE    |         FE          |FE|
 
 ## 📝 Technologies & Software Used
@@ -28,11 +28,16 @@ https://joyfive.notion.site/C-1-SA-582e3f58ec414bdaa30730374620cf47
 
 ## 🏀 Trouble Shooting
 
-글에 달린 댓글들을 List로 반환 할 때 JPA관계 설정으로 인해 순환참조의 문제를 직면했습니다.
+이번주에는 여러개의 파일을 올리는 작업을 진행했고 그 과정에서 여러개의 파일이 받아지지않는 문제가 생겼습니다.  
+* 기존에 쓰던 방식과 다르게 MultipartHttpServletRequest을 찾아 사용, 저 타입은 multipartfile을 list로 받아오는 타입
 
-저희는 단순하게 Response 시 댓글List가 담길 객체의 멤버로 Entity를 보유하지 않는 방식을 선택하여 해결했습니다.
+좋아요를 완성하고 테스트하는 단계에서 레포지토리에 찾았을때 하나의 값이 나와야하는데 두개 값이 나온다는 오류가 생김
+* 프론트와 연결시에는 생기지 않을 오류였지만 postman으로 테스트하는 중에 같은 게시물에 같은 유저가 두번 좋아요를 눌러서 생긴 문제
+  * 같은 유저가 같은 게시물에 두번 좋아요를 하지못하도록 중복체크를 한번 진행함
+  
+진행하다보면 하루에 한번정도 S3 access denied 뜨는 오류가 발생함
+* 어떤 이유인지 모르겠으나 계정에 등록되어있는 IM이 유출되었다는 알림을 받고 IM을 재생성함
 
-게시글을 조건별로 정렬하여 조회하기 위해 좋아요갯수 등을 Post의 Column으로 관리하였습니다.
 
 ## 📋 API Table
 
