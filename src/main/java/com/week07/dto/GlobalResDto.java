@@ -23,4 +23,8 @@ public class GlobalResDto<T> {
         return new GlobalResDto<>(errorCode.getStatus(), errorCode.getCode(), errorCode.getMessage());
     }
 
+
+    public static GlobalResDto<String> fail(String msg) {
+        return new GlobalResDto<>(400,null,msg);
+    }
 }

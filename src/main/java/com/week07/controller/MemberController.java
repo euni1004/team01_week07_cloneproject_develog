@@ -20,13 +20,13 @@ public class MemberController {
 
     //아이디 체크
     @PostMapping("/member/idCheck")
-    public GlobalResDto<?> idCheck(@RequestBody IdCheckDto idCheckDto) {
+    public GlobalResDto<?> idCheck(@RequestBody @Valid IdCheckDto idCheckDto) {
         return memberService.idCheck(idCheckDto);
     }
 
     //회원가입
     @PostMapping("/member/signup")
-    public GlobalResDto<?> signup(@RequestBody MemberReqDto memberReqDto) {
+    public GlobalResDto<?> signup(@RequestBody @Valid MemberReqDto memberReqDto) {
         return memberService.signup(memberReqDto);
     }
 

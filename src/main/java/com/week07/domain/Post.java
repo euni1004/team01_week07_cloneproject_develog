@@ -24,7 +24,7 @@ public class Post extends Timestamped {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long postId;
 
-
+    @Column(nullable = false)
     private String title;
 
     private String modifyPost;
@@ -34,6 +34,7 @@ public class Post extends Timestamped {
     @ElementCollection
     private List<String> imgUrl;
 
+    @Column(nullable = false)
     private String content;
 
     @ManyToOne
@@ -41,11 +42,14 @@ public class Post extends Timestamped {
     @JsonIgnore
     private Member member;
 
-    @OneToMany(mappedBy = "post", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "post", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Comment> comment = new ArrayList<>();
 
-//    @OneToMany(mappedBy = "post", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
-//    private List<Tag> tag = new ArrayList<>();
+    @OneToMany(mappedBy = "post", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Tag> tag = new ArrayList<>();
+
+//    @ElementCollection
+//    private List<String> tag;
 
     public Post(PostReqDto postReqDto){
         this.title = postReqDto.getPostTitle();
@@ -63,5 +67,10 @@ public class Post extends Timestamped {
         this.imgUrl = url;
         this.member = member;
         this.content = postReqDto.getPostContent();
+    }
+
+    public void updateTag(List<Tag> tagList) {
+
+        this.tag = tagList;
     }
 }

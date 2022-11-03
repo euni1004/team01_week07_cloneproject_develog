@@ -16,7 +16,7 @@ public class GetOnePostDto {
     private List<String> postImg;
     private String postTitle;
     private String postContent;
-    //    private List<String> tag;
+    private List<String> tag;
     private String countTime;
     private String modifyPost;
     private String userId;
@@ -26,12 +26,13 @@ public class GetOnePostDto {
     private Long countLike;
     private List<Comment> comments;
 
-    public static GetOnePostDto toGetOnePostDto(Post post, String countTime, boolean userLike, Long countLike,List<String> postImg) {
+    public static GetOnePostDto toGetOnePostDto(Post post, String countTime, boolean userLike, Long countLike, List<String> postImg,List<String> tag) {
 
         return new GetOnePostDto(
                 postImg,
                 post.getTitle(),
                 post.getContent(),
+                tag,
                 countTime,
                 post.getModifyPost(),
                 post.getMember().getUserId(),

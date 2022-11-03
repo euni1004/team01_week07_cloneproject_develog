@@ -16,7 +16,7 @@ public class MyPageReqDto {
     private List<String> postImg;
     private String postTitle;
     private String postContent;
-    //    private List<String> tag;
+//    private List<String> tag;
     private String countTime;
     private String modifyPost;
     private String countDay;

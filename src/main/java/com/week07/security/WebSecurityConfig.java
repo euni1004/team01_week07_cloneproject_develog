@@ -85,6 +85,7 @@ public class WebSecurityConfig {
                 .antMatchers("/getAllPostByTime").permitAll()
                 .antMatchers("/getMyPage").permitAll()
                 .antMatchers("/search/**").permitAll()
+                .antMatchers("/searchTag/**").permitAll()
 
                 .anyRequest().authenticated()
 

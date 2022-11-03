@@ -32,8 +32,10 @@ public class Member extends Timestamped{
 
     private String intro;
 
+    @Column(nullable = false)
     private String userImgPath;
 
+    @Column(nullable = false)
     private String userImgUrl;
 
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)

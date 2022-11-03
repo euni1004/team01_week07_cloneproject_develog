@@ -1,18 +1,12 @@
 package com.week07.service;
 
-import com.week07.domain.Comment;
-import com.week07.domain.Member;
-import com.week07.domain.Post;
-import com.week07.domain.PostLike;
+import com.week07.domain.*;
 import com.week07.dto.GlobalResDto;
 import com.week07.dto.response.GetAllPostResDto;
 import com.week07.dto.response.GetOnePostDto;
 import com.week07.exception.CustomException;
 import com.week07.exception.ErrorCode;
-import com.week07.repository.CommentRepository;
-import com.week07.repository.MemberRepository;
-import com.week07.repository.PostLikeRepository;
-import com.week07.repository.PostRepository;
+import com.week07.repository.*;
 import com.week07.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -33,6 +27,7 @@ public class GetPostService {
     private final MemberRepository memberRepository;
     private final PostLikeRepository postLikeRepository;
     private final CommentRepository commentRepository;
+    private final TagRepository tagRepository;
 
     public GlobalResDto<?> getAllPostByLike() {
 
@@ -67,7 +62,8 @@ public class GetPostService {
         String countTime = countTime(post.getCreatedAt());
         boolean userLike = isPresentLike(member, post);
         Long countLike = countLike(post);
-        GetOnePostDto getOnePostDto = GetOnePostDto.toGetOnePostDto(post, countTime, userLike, countLike, postImg);
+        List<String> tag = isPresentTag(member,post);
+        GetOnePostDto getOnePostDto = GetOnePostDto.toGetOnePostDto(post, countTime, userLike, countLike, postImg,tag);
 
         return GlobalResDto.success(getOnePostDto, null);
     }
@@ -115,6 +111,16 @@ public class GetPostService {
 
     public boolean isPresentLike(Member member, Post post) {
         return postLikeRepository.findByMemberAndPost(member, post).isPresent();
+    }
+
+    public List<String> isPresentTag(Member member, Post post){
+        List<Tag> tags= tagRepository.findAllByMemberAndPost(member,post);
+        List<String> stringTag = new ArrayList<>();
+        for(Tag tag : tags){
+            String string = tag.getTagName();
+            stringTag.add(string);
+        }
+        return stringTag;
     }
 
     public Long countLike(Post post) {

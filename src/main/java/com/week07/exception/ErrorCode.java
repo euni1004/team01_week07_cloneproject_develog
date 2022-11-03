@@ -19,6 +19,7 @@ public enum ErrorCode {
     NO_PERMISSION_CHANGE(HttpStatus.BAD_REQUEST.value(), "P003", "자신이 작성한 포스트만 수정가능합니다."),
     NO_PERMISSION_DELETE(HttpStatus.BAD_REQUEST.value(), "P004", "자신이 작성한 포스트만 삭제가능합니다"),
     KEYWORD_LENGTH_ERROR(HttpStatus.BAD_REQUEST.value(),"P005","검색단어의 길이는 2이상입니다."),
+    TAG_SIZE_ERROR(HttpStatus.BAD_REQUEST.value(), "P006","태그의 수는 최대 5개 입니다."),
 
     //postlike
     NOT_FOUND_POSTLIKE(HttpStatus.NOT_FOUND.value(), "PL001", "좋아요한 이력이 존재하지 않습니다."),
@@ -28,7 +29,9 @@ public enum ErrorCode {
     NOT_FOUND_COMMENT(HttpStatus.NOT_FOUND.value(), "C001", "해당 댓글을 찾을 수 없습니다"),
     NO_PERMISSION_DELETE_COMMENT(HttpStatus.BAD_REQUEST.value(), "C002", "해당 댓글 작성자가 아닙니다"),
 
-    NOT_FOUND(HttpStatus.NOT_FOUND.value(), "R001","알수없는 오류가 발생했습니다.");
+    NOT_FOUND(HttpStatus.NOT_FOUND.value(), "R001","알수없는 오류가 발생했습니다."),
+
+    FILE_SIZE_ERROR(HttpStatus.BAD_REQUEST.value(),"F001","파일의 최대크기는 512KB 입니다.");
 
 
     private final int status;

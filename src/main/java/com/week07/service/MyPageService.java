@@ -9,6 +9,7 @@ import com.week07.exception.CustomException;
 import com.week07.exception.ErrorCode;
 import com.week07.repository.MemberRepository;
 import com.week07.repository.PostRepository;
+import com.week07.repository.TagRepository;
 import com.week07.s3.AmazonS3ResourceStorage;
 import com.week07.s3.MultipartUtil;
 import com.week07.security.UserDetailsImpl;
@@ -28,6 +29,8 @@ public class MyPageService {
 
     private final MemberRepository memberRepository;
     private final PostRepository postRepository;
+
+//    private final TagRepository tagRepository;
     private final AmazonS3ResourceStorage amazonS3ResourceStorage;
     private final GetPostService getPostService;
 
@@ -68,6 +71,37 @@ public class MyPageService {
 
         return GlobalResDto.success(null,"프로필 사진을 변경하였습니다.");
     }
+
+//    public GlobalResDto<?> getMyPage(String userId) {
+//        Member member = isPresentMember2(userId);
+//        if(member==null){
+//            throw new CustomException(ErrorCode.NOT_FOUND_MEMBER);
+//        }
+//        List<Post> postList = isPresentPost(member);
+//        List<MyPageReqDto> myPageReqDtos = new ArrayList<>();
+//
+//        for(Post post:postList){
+//            String countTime = getPostService.countTime(post.getCreatedAt());
+//            String countDay = getPostService.countDay(post.getCreatedAt());
+//            Long countLike = getPostService.countLike(post);
+//            Long countCmt = getPostService.countCmt(post);
+//            List<String> postImg = post.getImgUrl();
+//            MyPageReqDto myPageReqDto = MyPageReqDto.toMyPageReqDto(post,countTime,countDay,countLike,countCmt,postImg);
+//            myPageReqDtos.add(myPageReqDto);
+//        }
+//
+//        List<Tag> tags = tagRepository.findAllByMember(member);
+//        List<String> stringTag = new ArrayList<>();
+//        for(Tag tag : tags){
+//            String string = tag.getTagName();
+//            stringTag.add(string);
+//        }
+//        List<String> newList = stringTag.stream().distinct().collect(Collectors.toList());
+//
+//        MyPageReqDtoPocket myPageReqDtoPocket = new MyPageReqDtoPocket( myPageReqDtos,newList);
+//
+//        return GlobalResDto.success(myPageReqDtoPocket,null);
+//    }
 
     public GlobalResDto<?> getMyPage(String userId) {
         Member member = isPresentMember2(userId);

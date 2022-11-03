@@ -2,6 +2,7 @@ package com.week07.service;
 
 import com.week07.domain.Member;
 import com.week07.domain.Post;
+import com.week07.domain.Tag;
 import com.week07.dto.GlobalResDto;
 import com.week07.dto.request.PostReqDto;
 import com.week07.dto.request.PostUpdateReqDto;
@@ -9,6 +10,7 @@ import com.week07.exception.CustomException;
 import com.week07.exception.ErrorCode;
 import com.week07.repository.MemberRepository;
 import com.week07.repository.PostRepository;
+import com.week07.repository.TagRepository;
 import com.week07.s3.AmazonS3ResourceStorage;
 import com.week07.s3.MultipartUtil;
 import com.week07.security.UserDetailsImpl;
@@ -21,6 +23,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -28,6 +31,7 @@ public class PostService {
 
     private final PostRepository postRepository;
     private final MemberRepository memberRepository;
+    private final TagRepository tagRepository;
     private final AmazonS3ResourceStorage amazonS3ResourceStorage;
 
     //포스트 작성
@@ -41,6 +45,11 @@ public class PostService {
             throw new CustomException(ErrorCode.MUST_HAVE_TITLE);
         }
 
+        if (postReqDto.getPostTag().size() > 5) {
+            throw new CustomException(ErrorCode.TAG_SIZE_ERROR);
+        }
+
+
         List<String> paths = new ArrayList<>();
         List<String> urls = new ArrayList<>();
         if (multipartFiles == null) {
@@ -49,7 +58,6 @@ public class PostService {
         } else {
             for (MultipartFile multipartFile : multipartFiles) {
                 String path = MultipartUtil.createPath(MultipartUtil.createFileId(), MultipartUtil.getFormat(multipartFile.getContentType()));
-                System.out.println(path);
                 paths.add(path);
                 amazonS3ResourceStorage.store(path, multipartFile);
                 String url = amazonS3ResourceStorage.getimg(path);
@@ -58,6 +66,24 @@ public class PostService {
         }
 
         Post post = new Post(postReqDto, member, paths, urls);
+
+        List<String> list = postReqDto.getPostTag().stream().distinct().collect(Collectors.toList());
+        List<Tag> tagList = new ArrayList<>();
+        if (postReqDto.getPostTag().size() >= 1) {
+
+            for (String tag : list) {
+
+                Tag tag1 = new Tag(tag, member, post);
+                tagRepository.save(tag1);
+                tagList.add(tag1);
+
+            }
+
+
+        }
+
+        post.updateTag(tagList);
+
         postRepository.save(post);
 
         return GlobalResDto.success(null, "게시물 등록");
@@ -74,7 +100,11 @@ public class PostService {
             throw new CustomException(ErrorCode.NO_PERMISSION_CHANGE);
         }
 
-        post.update(postUpdateReqDto, "수정됨");
+
+        if (!post.getModifyPost().equals("수정됨")) {
+            post.update(postUpdateReqDto, "수정됨");
+        }
+
         postRepository.save(post);
         return GlobalResDto.success(null, "게시물 수정");
     }

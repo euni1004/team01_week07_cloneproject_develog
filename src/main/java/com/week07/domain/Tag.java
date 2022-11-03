@@ -16,11 +16,23 @@ public class Tag {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long tagId;
 
-    private String tag;
+    private String tagName;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JsonIgnore
     @JoinColumn(name = "postId")
     private Post post;
 
+    @ManyToOne
+    @JsonIgnore
+    @JoinColumn(name = "memberId")
+    private Member member;
+
+    public Tag(String postTag, Member member,Post post) {
+
+        this.tagName = postTag;
+        this.post = post;
+        this.member = member;
+
+    }
 }

@@ -11,11 +11,8 @@ public class LoginReqDto {
 
     @NotBlank
     private String userId;
+
     @NotBlank
     private String pw;
-
-    public LoginReqDto(String userid) {
-        this.userId = userid;
-    }
 
 }

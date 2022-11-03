@@ -10,6 +10,11 @@ spring:
   profiles:
     include : secret
 
+  servlet:
+    multipart:
+      max-file-size: 512KB
+      max-request-size: 512KB
+
   h2:
     console:
       enabled: true

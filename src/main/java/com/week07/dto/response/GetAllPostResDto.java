@@ -16,7 +16,6 @@ public class GetAllPostResDto {
     private List<String> postImg;
     private String postTitle;
     private String postContent;
-    //    private List<String> tag;
     private String countTime;
     private String modifyPost;
     private String countDay;

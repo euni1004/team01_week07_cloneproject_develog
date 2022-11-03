@@ -32,7 +32,7 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
     private final RefreshTokenRepository refreshTokenRepository;
-    private final AmazonS3ResourceStorage amazonS3ResourceStorage;
+
 
     public GlobalResDto<Object> idCheck(IdCheckDto idCheckDto) {
         if (null != isPresentMember(idCheckDto.getUserId())) {
@@ -43,7 +43,7 @@ public class MemberService {
 
     public GlobalResDto<Object> signup(MemberReqDto memberReqDto) {
         if (null != isPresentMember(memberReqDto.getUserId())) {
-            throw new CustomException(ErrorCode.NOT_FOUND_MEMBER);
+            throw new CustomException(ErrorCode.DUPLICATED_NICKNAME);
         }
 
         if (!memberReqDto.getPw().equals(memberReqDto.getPwCheck())) {

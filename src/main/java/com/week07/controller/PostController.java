@@ -29,25 +29,16 @@ public class PostController {
                                       @RequestParam(required = false) String contents,
                                       MultipartHttpServletRequest multipartHttpServletRequest) throws IOException {
 
-        System.out.println(contents);
-//        System.out.println(file.get(0).getOriginalFilename());
-//        System.out.println(file);
         Gson gson = new Gson();
         PostReqDto postReqDto = gson.fromJson(contents, PostReqDto.class);
-//        System.out.println(multipartHttpServletRequest);
-//        System.out.println(postReqDto.getPostContent());
         List<MultipartFile> multipartFiles = new ArrayList<>();
         if(multipartHttpServletRequest ==null){
             multipartFiles.add(null);
         }else{
             multipartFiles = multipartHttpServletRequest.getFiles("file");
         }
-        System.out.println(multipartFiles);
 
-//        MultipartFile file = multipartFiles.get(0);
-//        System.out.println(multipartFiles.get(0).getOriginalFilename());
-//        System.out.println(multipartFiles.get(1).getOriginalFilename());
-//        return GlobalResDto.success(null,"hello");
+//        return null;
         return postService.createPost(postReqDto, userDetails, multipartFiles);
     }
 
