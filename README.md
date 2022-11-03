@@ -12,7 +12,7 @@
 
 |  공은희  |  김병현   |  원민재   |  오기쁨  |        박지윤        |조민지|
 | :------: | :-------: | :-------: | :------: | :------------------: |:-----:|
-| @younddo | @anfrosus | @dhun0103 | @joyfive | tjdghkek88@gmail.com |ㅁㄴㅇㅁㄴㅇ|
+| @euni1004 | @KimByeungHyun | @meruberu | @joyfive | tjdghkek88@gmail.com |ㅁㄴㅇㅁㄴㅇ|
 |   BE    |    BE    |    BE    |   FE    |         FE          |FE|
 
 ## 📝 Technologies & Software Used
